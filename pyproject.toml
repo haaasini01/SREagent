@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sre-agent"
+version = "0.1.0"
+description = "A staged incident-response agent demo"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "langgraph>=0.2",
+    "langchain-ollama>=0.2",
+    "mcp[cli]>=1.0,<2",
+    "psycopg[binary]>=3.2",
+    "pydantic-settings>=2.6",
+    "uvicorn[standard]>=0.30",
+]
+
+[tool.setuptools.packages.find]
+where = ["backend"]
