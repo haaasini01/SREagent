@@ -1,0 +1,86 @@
+{
+  "suite_version": "1.0.0",
+  "cases": [
+    {
+      "case_id": "database-connection-refused",
+      "logs": "checkout-api connection refused by DB_SHARD_04",
+      "expected_evidence_ids": ["DB-001"],
+      "expected_citations": ["DB-001"],
+      "expected_abstention": false,
+      "expected_tool": "check_db_status",
+      "model_output": {
+        "diagnosis": "checkout-api cannot connect to DB_SHARD_04.",
+        "cited_evidence_ids": ["DB-001"],
+        "confidence": 0.9,
+        "abstain": false,
+        "abstention_reason": null,
+        "action": {
+          "tool_name": "check_db_status",
+          "arguments": {"shard_id": "DB_SHARD_04"},
+          "description": "Check the simulated database shard status."
+        }
+      }
+    },
+    {
+      "case_id": "checkout-high-latency",
+      "logs": "checkout-api p95 latency above normal response time",
+      "expected_evidence_ids": ["LAT-001"],
+      "expected_citations": ["LAT-001"],
+      "expected_abstention": false,
+      "expected_tool": "fetch_service_logs",
+      "model_output": {
+        "diagnosis": "checkout-api has elevated request latency.",
+        "cited_evidence_ids": ["LAT-001"],
+        "confidence": 0.82,
+        "abstain": false,
+        "abstention_reason": null,
+        "action": {
+          "tool_name": "fetch_service_logs",
+          "arguments": {"service_name": "payment_gateway"},
+          "description": "Inspect simulated checkout service logs."
+        }
+      }
+    },
+    {
+      "case_id": "healthy-baseline",
+      "logs": "healthy baseline zero errors successful requests status 200",
+      "expected_evidence_ids": ["BASE-001"],
+      "expected_citations": ["BASE-001"],
+      "expected_abstention": true,
+      "expected_tool": null,
+      "model_output": {
+        "diagnosis": "The sample window contains no observed errors.",
+        "cited_evidence_ids": ["BASE-001"],
+        "confidence": 0.92,
+        "abstain": true,
+        "abstention_reason": "No active failure is established by this sample.",
+        "action": null
+      }
+    },
+    {
+      "case_id": "conflicting-database-and-latency-signals",
+      "logs": "connection refused DB_SHARD_04 checkout-api high latency p95",
+      "expected_evidence_ids": ["DB-001", "LAT-001"],
+      "expected_citations": ["DB-001", "LAT-001"],
+      "expected_abstention": true,
+      "expected_tool": null,
+      "model_output": {
+        "diagnosis": "The evidence indicates multiple possible causes.",
+        "cited_evidence_ids": ["DB-001", "LAT-001"],
+        "confidence": 0.45,
+        "abstain": true,
+        "abstention_reason": "Conflicting signals require further investigation.",
+        "action": null
+      }
+    },
+    {
+      "case_id": "unmatched-incident",
+      "logs": "orbital sunflower zoology",
+      "expected_evidence_ids": [],
+      "expected_citations": [],
+      "expected_abstention": true,
+      "expected_tool": null,
+      "model_output": null
+    }
+  ]
+}
